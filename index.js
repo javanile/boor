@@ -10,15 +10,19 @@ module.exports = {
     /**
      *
      */
-    foreach: function (iterable, statament) {
-        var type = statament.length;
-
+    foreach: function (iterable, modifier, statement) {
+        if (typeof statement === 'undefined') {
+            statement = modifier
+            modifier = statement.length > 1 ? 'pairs' : 'values'
+        }
         for (var key in iterable) {
             if (iterable.hasOwnProperty(key)) {
-                if (type === 1) {
-                    statament(iterable[key])
+                if (modifier === 'keys') {
+                    statement(key)
+                } else if (modifier === 'values') {
+                    statement(iterable[key])
                 } else {
-                    statament(key, iterable[key])
+                    statement(key, iterable[key])
                 }
             }
         }
