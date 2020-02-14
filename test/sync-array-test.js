@@ -1,48 +1,27 @@
-"use strict";
+'use strict';
 
-var cli = require("../src/cli");
-var ops = require("../src/ops");
-var util = require("../src/util");
-var chai = require("chai");
+const chai = require('chai')
+const { foreach } = require('../');
 
-chai.use(require("chai-fs"));
+describe('Sync testing', function () {
 
-describe("Testing command-line interface", function () {
-
-    it("dockerops", function () {
-        var exec = cli.run();
-        chai.assert.equal(exec, "docker-compose ps");
-        var exec = cli.run([]);
-        chai.assert.equal(exec, "docker-compose ps");
+    it('Loop through array values', function () {
+        let values = ['a', 'b', 'c']
+        let timeline = '';
+        foreach(values, (value) => {
+            timeline += value.toUpperCase()
+        })
+        chai.assert.equal(timeline, 'ABC')
     });
 
-    it("dockerops unknown", function () {
-        var exec = cli.run(['unknown']);
-        chai.assert.equal(exec, "docker-compose run unknown bash");
+    /*
+    it('Loop through key-value pairs', function () {
+        let values = ['a', 'b', 'c']
+        let timeline = '';
+        foreach(values, (key, value) => {
+            timeline += key + value.toUpperCase()
+        })
+        chai.assert.equal(timeline, '0A1B2C')
     });
-
-    it("dockerops --help", function () {
-        //chai.assert.match(cli.run(["--help"]), /Usage:/, "Help not match");
-    });
-
-    it("dockerops --help up", function () {
-        //var help = cli.run(["--help", "clone"]);
-        //chai.assert.match(help, /Usage: ndev clone/, "Command help not match");
-    });
-
-    it("dockerops --help unknown", function () {
-        //var message = cli.run(["--help", "unknown"]);
-        //chai.assert.match(message, /Undefined command/, "Command help not match");
-    });
-
-    it("dockerops --version", function () {
-        //var version = cli.run(["--version"]);
-        //chai.assert.match(version, /[0-9]+\.[0-9]+\.[0-9]+/, "Version not match");
-    });
-
-    it("dockerops up", function () {
-        var exec = cli.run(["up"]);
-        chai.assert.equal(exec, "docker-compose up -d --remove-orphans");
-    });
-
+     */
 });
