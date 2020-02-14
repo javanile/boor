@@ -5,26 +5,43 @@
  * MIT Licensed
  */
 
-module.exports = {
+/**
+ *
+ * @param iterable
+ * @param modifier
+ * @param statement
+ */
+function foreach(iterable, loopStatement, thenStatement) {
 
-    /**
-     *
-     */
-    foreach: function (iterable, modifier, statement) {
-        if (typeof statement === 'undefined') {
-            statement = modifier
-            modifier = statement.length > 1 ? 'pairs' : 'values'
+    let promise = {
+        then: function(statement) {
+
         }
-        for (var key in iterable) {
-            if (iterable.hasOwnProperty(key)) {
-                if (modifier === 'keys') {
-                    statement(key)
-                } else if (modifier === 'values') {
-                    statement(iterable[key])
-                } else {
-                    statement(key, iterable[key])
-                }
+    }
+
+    if (typeof thenStatement === 'function') {
+        promise.then(thenStatement)
+    }
+
+    if (typeof loopStatement === 'undefined') {
+        statement = modifier
+        modifier = statement.length > 1 ? 'pairs' : 'values'
+    }
+
+    for (let key in iterable) {
+        if (iterable.hasOwnProperty(key)) {
+            if (modifier === 'keys') {
+                statement(key)
+            } else if (modifier === 'values') {
+                statement(iterable[key])
+            } else {
+                statement(key, iterable[key])
             }
         }
     }
+
+    return promise
 }
+
+//
+module.exports = { foreach }

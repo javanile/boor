@@ -1,6 +1,7 @@
 {
     "name": "boor",
-    "version": "0.0.3",
+    "description": "The easy async interation utility",
+    "version": "0.0.4",
     "license": "MIT",
     "author": {
         "name": "Francesco Bianco",
@@ -17,7 +18,6 @@
     },
     "devDependencies": {
         "chai": "^3.5.0",
-        "chai-fs": "^1.0.0",
         "mocha": "^3.2.0"
     }
 }
