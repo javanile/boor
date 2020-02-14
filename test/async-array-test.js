@@ -16,7 +16,9 @@ describe('Async testing', function () {
                 next()
             }, 2000)
         }).then(() => {
-            chai.assert.equal(timeline, 'ABC')
+            timeline += '.'
+        }).then(() => {
+            chai.assert.equal(timeline, 'ABC.')
             done()
         })
     });
