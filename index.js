@@ -7,8 +7,8 @@
 
 const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 const ARGUMENT_NAMES = /([^\s,]+)/g;
-const KEY_ARGUMENT_NAMES = ['i', 'j', 'index', 'key']
-const DONE_ARGUMENT_NAMES = ['done', 'than']
+const KEY_NAMES = ['key', 'index', 'i', 'j', 'k']
+const NEXT_NAMES = ['next', 'done', 'than']
 
 /**
  *
@@ -31,10 +31,14 @@ function getFunctionArgumentNames(func) {
 function foreach(iterable, loopStatement, thenStatement) {
     let useAsync = false
     let loopArguments = getFunctionArgumentNames(loopStatement)
-    let modifier = loopArguments.length < 2 && KEY_ARGUMENT_NAMES.indexOf(loopArguments[0]) === -1 ? 'value' : 'key'
+    let modifier = loopArguments.length < 2 && KEY_NAMES.indexOf(loopArguments[0]) === -1 ? 'value' : 'key'
 
     if (loopArguments.length === 2) {
-
+        modifier = 'key,value'
+        if (NEXT_NAMES.indexOf(loopArguments[1]) !== -1)  {
+            useAsync = true
+            modifier = KEY_NAMES.indexOf(loopArguments[0]) !== -1 ? 'key,next' : 'value,next'
+        }
     } else {
         useAsync = true
         modifier = 'key,value,next'
@@ -53,12 +57,14 @@ function foreach(iterable, loopStatement, thenStatement) {
             if (++index < keys.length) {
                 iterate()
             } else {
-                thenPromise.done();
+                thenPromise.resolve.apply(null, arguments);
             }
         }
 
         function iterate() {
             switch (modifier) {
+                case 'key,next': loopStatement(keys[index], next); break;
+                case 'value,next': loopStatement(iterable[keys[index]], next); break;
                 case 'key,value,next': loopStatement(keys[index], iterable[keys[index]], next); break;
                 default: loopStatement(keys[index], iterable[keys[index]], next); break;
             }
@@ -83,14 +89,16 @@ function foreach(iterable, loopStatement, thenStatement) {
             if (useAsync) {
                 this.statements.push(statement)
             } else {
-                statement()
+                statement.apply(null, arguments);
             }
+            return this
         },
-        done: function () {
+        resolve: function () {
             if (useAsync) {
-                for (let i in iterable) {
+                for (let i in this.statements) {
                     let statement = this.statements[i]
-                    statement()
+                    console.log("--", arguments)
+                    statement.apply(null, arguments);
                 }
             }
         }
