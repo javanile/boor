@@ -4,6 +4,9 @@
 ### Loop through `Array` items
 
 ```js
+/**
+ * Loop through only values
+ */
 let values = ['Apple', 'Banana', 'Cagaita']
 
 foreach(values, (value) => {
@@ -17,6 +20,9 @@ foreach(values, (value) => {
 ```
 
 ```js
+/**
+ * Loop through key-value pairs
+ */
 let values = ['Apple', 'Banana', 'Cagaita']
 
 foreach(values, (key, value) => {
