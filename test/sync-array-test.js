@@ -9,7 +9,6 @@ describe('Sync array testing', function () {
         let timeline = ''
         let values = ['a', 'b', 'c']
         foreach(values, (key) => {
-            console.log(key)
             timeline += (-key + '').toUpperCase()
         }, (key) => {
             timeline += '_' + key
