@@ -7,8 +7,8 @@ describe('Async array testing', function () {
     this.timeout(10000)
 
     it('Loop through array keys', function (done) {
-        let values = ['a', 'b', 'c']
         let timeline = '';
+        let values = ['a', 'b', 'c']
         foreach(values, (key, next) => {
             setTimeout(() => {
                 timeline += (key + '').toUpperCase()
@@ -26,8 +26,8 @@ describe('Async array testing', function () {
     });
 
     it('Loop through array values', function (done) {
-        let values = ['a', 'b', 'c']
         let timeline = '';
+        let values = ['a', 'b', 'c']
         foreach(values, (value, next) => {
             setTimeout(() => {
                 timeline += (value + '').toUpperCase()
@@ -45,10 +45,9 @@ describe('Async array testing', function () {
     });
 
     it('Loop through key-value pairs', function (done) {
-        let values = ['a', 'b', 'c']
         let timeline = '';
+        let values = ['a', 'b', 'c']
         foreach(values, (key, value, next) => {
-            //console.log(key, value)
             setTimeout(() => {
                 timeline += key + value.toUpperCase()
                 next(key, value)

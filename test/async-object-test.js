@@ -1,13 +1,13 @@
 'use strict';
 
 const chai = require('chai')
-const { foreach } = require('../');
+const { foreach } = require('../')
 
 describe('Async object testing', function () {
     this.timeout(10000)
 
     it('Loop through object attribute names', function (done) {
-        let timeline = '';
+        let timeline = ''
         let values = { a: 0, b: 1, c: 2 }
         foreach(values, (key, next) => {
             setTimeout(() => {
@@ -26,8 +26,8 @@ describe('Async object testing', function () {
     });
 
     it('Loop through object attribute values', function (done) {
+        let timeline = ''
         let values = { a: 0, b: 1, c: 2 }
-        let timeline = '';
         foreach(values, (value, next) => {
             setTimeout(() => {
                 timeline += (value + '').toUpperCase()
@@ -45,10 +45,9 @@ describe('Async object testing', function () {
     });
 
     it('Loop through key-value pairs', function (done) {
+        let timeline = ''
         let values = { a: 0, b: 1, c: 2 }
-        let timeline = '';
         foreach(values, (key, value, next) => {
-            //console.log(key, value)
             setTimeout(() => {
                 timeline += key.toUpperCase() + value
                 next(key, value)
@@ -63,4 +62,5 @@ describe('Async object testing', function () {
             done()
         })
     });
+
 });

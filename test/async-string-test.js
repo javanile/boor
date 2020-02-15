@@ -1,66 +1,66 @@
 'use strict';
 
 const chai = require('chai')
-const { foreach } = require('../');
+const { foreach } = require('../')
 
-describe('Async object testing', function () {
+describe('Async string testing', function () {
     this.timeout(10000)
 
-    it('Loop through object attribute names', function (done) {
-        let values = { a: 0, b: 1, c: 2 }
-        let timeline = '';
-        foreach(values, (key, next) => {
+    it('Loop through string char index', function (done) {
+        let timeline = ''
+        let string = 'abc'
+        foreach(string, (index, next) => {
             setTimeout(() => {
-                timeline += (key + '').toUpperCase()
-                next(key)
+                timeline += (-index + '').toUpperCase()
+                next(index)
             }, 2000)
-        }, (key) => {
-            timeline += '_' + key
-        }).then((key) => {
-            timeline += '.' + key
-        }).then((key) => {
-            timeline += ',' + key
+        }, (index) => {
+            timeline += '_' + index
+        }).then((index) => {
+            timeline += '.' + index
+        }).then((index) => {
+            timeline += ',' + index
+            chai.assert.equal(timeline, '0-1-2_2.2,2')
+            done()
+        })
+    })
+
+    it('Loop through string chars', function (done) {
+        let timeline = ''
+        let string = 'abc'
+        foreach(string, (char, next) => {
+            setTimeout(() => {
+                timeline += char.toUpperCase()
+                next(char)
+            }, 2000)
+        }, (char) => {
+            timeline += '_' + char
+        }).then((char) => {
+            timeline += '.' + char
+        }).then((char) => {
+            timeline += ',' + char
             chai.assert.equal(timeline, 'ABC_c.c,c')
             done()
         })
-    });
+    })
 
-    it('Loop through object attribute values', function (done) {
-        let values = { a: 0, b: 1, c: 2 }
-        let timeline = '';
-        foreach(values, (value, next) => {
+    it('Loop through string index-char pairs', function (done) {
+        let timeline = ''
+        let string = 'abc'
+        foreach(string, (index, char, next) => {
             setTimeout(() => {
-                timeline += (value + '').toUpperCase()
-                next(value)
+                timeline += index + char.toUpperCase()
+                next(index, char)
             }, 2000)
-        }, (value) => {
-            timeline += '_' + value
-        }).then((value) => {
-            timeline += '.' + value
-        }).then((value) => {
-            timeline += ',' + value
-            chai.assert.equal(timeline, '012_2.2,2')
+        }, (index, char) => {
+            timeline += '_' + index + char
+        }).then((index, char) => {
+            timeline += '.' + index + char
+        }).then((index, char) => {
+            timeline += ',' + index + char
+            chai.assert.equal(timeline, '0A1B2C_2c.2c,2c')
             done()
         })
-    });
+    })
 
-    it('Loop through key-value pairs', function (done) {
-        let values = { a: 0, b: 1, c: 2 }
-        let timeline = '';
-        foreach(values, (key, value, next) => {
-            //console.log(key, value)
-            setTimeout(() => {
-                timeline += key.toUpperCase() + value
-                next(key, value)
-            }, 2000)
-        }, (key, value) => {
-            timeline += '_' + key + value
-        }).then((key, value) => {
-            timeline += '.' + key + value
-        }).then((key, value) => {
-            timeline += ',' + key + value
-            chai.assert.equal(timeline, 'A0B1C2_c2.c2,c2')
-            done()
-        })
-    });
-});
+})
