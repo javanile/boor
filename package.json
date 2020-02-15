@@ -1,6 +1,6 @@
 {
     "name": "boor",
-    "description": "The easy async interation utility",
+    "description": "The easy sync/async foreach",
     "version": "0.0.4",
     "license": "MIT",
     "author": {
