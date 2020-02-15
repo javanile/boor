@@ -1,16 +1,17 @@
 /*!
  * Boor!!
  *
- * Copyright(c) 2016-2017 Javanile.org
+ * Copyright(c) 2016-2020 Javanile.org
  * MIT Licensed
  */
 
 const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 const ARGUMENT_NAMES = /([^\s,]+)/g;
 const KEY_NAMES = ['key', 'index', 'i', 'j', 'k']
-const NEXT_NAMES = ['next', 'done', 'than']
+const NEXT_NAMES = ['next', 'done']
 
 /**
+ * Get argument names of a function.
  *
  * @param func
  * @returns {RegExpMatchArray}
@@ -23,10 +24,11 @@ function getFunctionArgumentNames(func) {
 }
 
 /**
+ * Loop through a ineterable.
  *
  * @param iterable
- * @param modifier
- * @param statement
+ * @param loopStatement
+ * @param thenStatement
  */
 function foreach(iterable, loopStatement, thenStatement) {
     let useAsync = false
@@ -57,7 +59,7 @@ function foreach(iterable, loopStatement, thenStatement) {
             if (++index < keys.length) {
                 iterate()
             } else {
-                thenPromise.resolve.apply(null, arguments);
+                promise.resolve(arguments);
             }
         }
 
@@ -83,7 +85,7 @@ function foreach(iterable, loopStatement, thenStatement) {
         }
     }
 
-    let thenPromise = {
+    let promise = {
         statements: [],
         then: function (statement) {
             if (useAsync) {
@@ -93,11 +95,10 @@ function foreach(iterable, loopStatement, thenStatement) {
             }
             return this
         },
-        resolve: function () {
+        resolve: function (arguments) {
             if (useAsync) {
                 for (let i in this.statements) {
                     let statement = this.statements[i]
-                    console.log("--", arguments)
                     statement.apply(null, arguments);
                 }
             }
@@ -105,10 +106,10 @@ function foreach(iterable, loopStatement, thenStatement) {
     }
 
     if (typeof thenStatement === 'function') {
-        thenPromise.then(thenStatement)
+        promise.then(thenStatement)
     }
 
-    return thenPromise
+    return promise
 }
 
 //

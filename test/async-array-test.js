@@ -3,21 +3,18 @@
 const chai = require('chai')
 const { foreach } = require('../');
 
-describe('Async testing', function () {
+describe('Async array testing', function () {
     this.timeout(10000)
 
-    /*
     it('Loop through array keys', function (done) {
         let values = ['a', 'b', 'c']
         let timeline = '';
         foreach(values, (key, next) => {
-            console.log(key, next)
             setTimeout(() => {
                 timeline += (key + '').toUpperCase()
                 next(key)
             }, 2000)
         }, (key) => {
-            console.log(key)
             timeline += '_' + key
         }).then((key) => {
             timeline += '.' + key
@@ -26,23 +23,43 @@ describe('Async testing', function () {
             chai.assert.equal(timeline, '012_2.2,2')
             done()
         })
-    });*/
+    });
+
+    it('Loop through array values', function (done) {
+        let values = ['a', 'b', 'c']
+        let timeline = '';
+        foreach(values, (value, next) => {
+            setTimeout(() => {
+                timeline += (value + '').toUpperCase()
+                next(value)
+            }, 2000)
+        }, (value) => {
+            timeline += '_' + value
+        }).then((value) => {
+            timeline += '.' + value
+        }).then((value) => {
+            timeline += ',' + value
+            chai.assert.equal(timeline, 'ABC_c.c,c')
+            done()
+        })
+    });
 
     it('Loop through key-value pairs', function (done) {
         let values = ['a', 'b', 'c']
         let timeline = '';
         foreach(values, (key, value, next) => {
-            //console.log(key, value, next)
+            //console.log(key, value)
             setTimeout(() => {
                 timeline += key + value.toUpperCase()
-                next()
+                next(key, value)
             }, 2000)
-        }, () => {
-            timeline += '_'
-        }).then(() => {
-            timeline += '.'
-        }).then(() => {
-            chai.assert.equal(timeline, '0A1B2C_.')
+        }, (key, value) => {
+            timeline += '_' + key + value
+        }).then((key, value) => {
+            timeline += '.' + key + value
+        }).then((key, value) => {
+            timeline += ',' + key + value
+            chai.assert.equal(timeline, '0A1B2C_2c.2c,2c')
             done()
         })
     });
