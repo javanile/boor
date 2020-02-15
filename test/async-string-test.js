@@ -7,8 +7,8 @@ describe('Async object testing', function () {
     this.timeout(10000)
 
     it('Loop through object attribute names', function (done) {
-        let timeline = '';
         let values = { a: 0, b: 1, c: 2 }
+        let timeline = '';
         foreach(values, (key, next) => {
             setTimeout(() => {
                 timeline += (key + '').toUpperCase()
